@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="The Nightingale: an anthology of strange and wonderful stories about the light that survives in darkness. Created by Scott Downes.">
+<meta property="og:title" content="The Nightingale">
+<meta property="og:description" content="Strange and wonderful stories about the light that survives in darkness.">
+<meta property="og:url" content="https://thesongofthenightingale.com/">
+<title>The Nightingale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Alegreya:ital,wght@0,400;0,500;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one night-long column. Hero = title over a live sonogram of birdsong; then premise, principles, episode list, colophon. Single dark world by design. */
+:root{
+  --night:#0c0f1c;        /* page ground: blue-black night */
+  --dusk:#141a2e;         /* raised surfaces */
+  --rule:#272e4a;         /* hairlines */
+  --moon:#e9e3d2;         /* primary text, moonlit paper */
+  --haze:#9ea2bd;         /* secondary text */
+  --rufous:#d08a5c;       /* accent: the nightingale's russet tail */
+  --rufous-soft:rgba(208,138,92,.16);
+  --f-display:"IM Fell English","Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --f-body:"Alegreya","Iowan Old Style",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--night)}
+body{
+  background:var(--night);color:var(--moon);
+  font-family:var(--f-body);font-size:1.125rem;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--rufous)}
+:focus-visible{outline:2px solid var(--rufous);outline-offset:3px}
+.wrap{
+  max-width:1080px;margin-inline:auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+.label{
+  font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--haze);
+}
+
+/* ---------- hero ---------- */
+.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}
+.hero .wrap{position:relative;z-index:1;padding-block:clamp(56px,10vw,120px) clamp(40px,7vw,80px);display:grid;gap:28px}
+#sono{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:.9}
+.hero::after{ /* keep the title legible over the sonogram */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,var(--night) 0%,rgba(12,15,28,.86) 38%,rgba(12,15,28,.35) 75%,rgba(12,15,28,.15) 100%);
+}
+h1{
+  font-family:var(--f-display);font-weight:400;margin:0;
+  font-size:clamp(3.2rem,11vw,8rem);line-height:.92;letter-spacing:-.01em;text-wrap:balance;
+}
+h1 em{font-style:italic;color:var(--rufous)}
+.tagline{font-size:clamp(1.2rem,2.4vw,1.5rem);max-width:30ch;margin:0;color:var(--moon);text-wrap:balance}
+.creator{margin:0}
+.axis-note{font-family:var(--f-mono);font-size:.68rem;color:var(--haze);letter-spacing:.06em;margin:0}
+
+/* ---------- sections ---------- */
+section{border-bottom:1px solid var(--rule)}
+section > .wrap{padding-block:clamp(56px,8vw,96px)}
+h2{
+  font-family:var(--f-display);font-weight:400;margin:0 0 .4em;
+  font-size:clamp(2rem,4.6vw,3rem);line-height:1.05;text-wrap:balance;
+}
+.lede{
+  font-family:var(--f-display);font-style:italic;
+  font-size:clamp(1.5rem,3.4vw,2.25rem);line-height:1.25;max-width:24ch;margin:0;text-wrap:balance;
+}
+.prose{max-width:62ch;display:grid;gap:1em}
+.prose p{margin:0}
+.premise{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,6vw,80px);align-items:start}
+.premise > *{min-width:0}
+
+/* principles */
+.principles{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.principles li{background:var(--night);padding:28px 24px 30px;display:grid;gap:12px;align-content:start}
+.principles .num{font-family:var(--f-mono);font-size:.8rem;color:var(--rufous)}
+.principles h3{font-family:var(--f-display);font-weight:400;font-size:1.6rem;line-height:1.15;margin:0;text-wrap:balance}
+.principles p{margin:0;color:var(--haze);font-size:1.02rem}
+
+.refrain{
+  margin:clamp(40px,6vw,64px) 0 0;padding:0;
+  font-family:var(--f-display);font-size:clamp(1.6rem,3.8vw,2.6rem);line-height:1.2;max-width:28ch;text-wrap:balance;
+}
+.refrain span{color:var(--rufous);font-style:italic}
+
+/* lineage */
+.lineage{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:22px;padding:0;list-style:none}
+.lineage li{font-family:var(--f-mono);font-size:.8rem;color:var(--haze);letter-spacing:.04em}
+.lineage li::before{content:"~ ";color:var(--rufous)}
+
+/* ---------- episodes ---------- */
+.ep-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 32px}
+.ep-head p{margin:0;max-width:46ch;color:var(--haze)}
+.group-label{margin:44px 0 0;padding-bottom:12px;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.episodes{list-style:none;margin:0;padding:0}
+.ep{
+  display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:10px clamp(24px,5vw,64px);
+  padding:28px 0;border-bottom:1px solid var(--rule);
+}
+.ep > *{min-width:0}
+.ep-title{display:grid;gap:10px;align-content:start}
+.ep h3{font-family:var(--f-display);font-weight:400;font-size:clamp(1.7rem,3.2vw,2.2rem);line-height:1.05;margin:0;text-wrap:balance}
+.ep .genre{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rufous)}
+.ep canvas{width:132px;height:30px;display:block;opacity:.85}
+.ep p{margin:0;max-width:62ch}
+.ep:hover h3{color:var(--rufous)}
+.ep.concept p{color:var(--haze)}
+
+/* ---------- colophon ---------- */
+footer .wrap{padding-block:48px 64px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 32px;align-items:baseline}
+footer .mark{font-family:var(--f-display);font-size:1.6rem}
+footer p{margin:0}
+
+@media (max-width:760px){
+  .premise{grid-template-columns:minmax(0,1fr)}
+  .principles{grid-template-columns:minmax(0,1fr)}
+  .ep{grid-template-columns:minmax(0,1fr)}
+  .hero::after{background:linear-gradient(180deg,rgba(12,15,28,.55) 0%,rgba(12,15,28,.88) 60%,var(--night) 100%)}
+}
+</style>
+</head>
+<body>
+
+
+<header class="hero">
+  <canvas id="sono" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="label">An anthology series</p>
+    <h1>The <em>Night</em>ingale</h1>
+    <p class="tagline">Strange and wonderful stories about the light that survives in darkness.</p>
+    <p class="label creator">Created by Scott Downes</p>
+    <p class="axis-note" id="axisNote">Behind the title: a sonogram of birdsong, 0–8 kHz</p>
+  </div>
+</header>
+
+<main>
+  <section id="premise">
+    <div class="wrap premise">
+      <div>
+        <p class="label" style="margin:0 0 18px">The premise</p>
+        <p class="lede">The nightingale doesn't wait for sunrise to sing. Its song exists because it's night.</p>
+      </div>
+      <div class="prose">
+        <p>Each episode of <i>The Nightingale</i> is an encounter with the extraordinary: a supernatural revelation, an impossible technology, a peculiar curse, or an unsettling mystery that breaks open the familiar world. The stories draw from fairy tales, speculative fiction, magical realism, and the tradition of <i>The Twilight Zone</i> to explore the fears, desires, failures, and possibilities of being human.</p>
+        <p>The darkness in these stories is real. Characters suffer, make terrible choices, and learn truths they would rather not know. But the series doesn't accept that the universe is fundamentally cruel, or that people are helpless in it. Somewhere in every story is the possibility of grace, redemption, connection, wonder, or transformation.</p>
+        <p>The song doesn't have to rescue the protagonist. It doesn't even have to be heard by the protagonist. Sometimes only the audience sees the moment of beauty, compassion, courage, or grace that the characters can't.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="principles">
+    <div class="wrap">
+      <p class="label" style="margin:0 0 12px">How we tell them</p>
+      <h2>Three principles</h2>
+      <ol class="principles">
+        <li>
+          <span class="num">I.</span>
+          <h3>Darkness is the setting, not the message.</h3>
+          <p>A story can be frightening, unsettling, absurd, or tragic without treating despair as the final truth.</p>
+        </li>
+        <li>
+          <span class="num">II.</span>
+          <h3>The song can belong to the audience.</h3>
+          <p>The characters don't have to find redemption, revelation, or even hope. Sometimes we see what they can't.</p>
+        </li>
+        <li>
+          <span class="num">III.</span>
+          <h3>Optimism is earned, never imposed.</h3>
+          <p>No manufactured happy endings and no required moral. Meaning has to grow out of the story itself.</p>
+        </li>
+      </ol>
+      <p class="refrain">Not every story needs a happy ending. <span>Every story should have something worth singing about.</span></p>
+      <ul class="lineage" aria-label="Lineage">
+        <li>Fairy tales, with their cruelty and mischief intact</li>
+        <li>Rod Serling's <i>The Twilight Zone</i></li>
+        <li>"San Junipero," optimism that is earned</li>
+        <li>Magical realism</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="episodes">
+    <div class="wrap">
+      <div class="ep-head">
+        <div>
+          <p class="label" style="margin:0 0 12px">The slate</p>
+          <h2 style="margin:0">Episodes</h2>
+        </div>
+        <p>Nine stories so far. Each one has its own song.</p>
+      </div>
+
+      <div class="group-label"><span class="label">In development</span><span class="label">5 episodes</span></div>
+      <ol class="episodes" id="devList"></ol>
+
+      <div class="group-label"><span class="label">From the notebooks</span><span class="label">4 concepts</span></div>
+      <ol class="episodes" id="conceptList"></ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span class="mark">The Nightingale</span>
+    <p class="label">An anthology by Scott Downes · 2026</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const EPISODES = [
+    {t:"First Session", g:"Psychological horror / Supernatural thriller", s:"dev",
+     l:"A seemingly compassionate online therapist helps patients confront recurring nightmares. When one woman begins remembering the horrifying truth behind her dreams, she discovers that her therapist is a serial killer who has imprisoned his victims' souls, and that he may be trapped in an eternal nightmare of his own making."},
+    {t:"Honey Boy", g:"Supernatural slasher / Folk horror", s:"dev",
+     l:"A grotesque, sweet-toothed killer who lures children with candy discovers that his murderous compulsions are a terrible family inheritance, forcing him to confront the kindly grandfather whose darkest secrets may explain the monster he's become."},
+    {t:"County Downs", g:"Horror / Dark comedy", s:"dev",
+     l:"After walking out of a rowdy teenage house party, two young women become convinced they're being followed through a quiet suburban neighborhood. When they take refuge in an unfinished house, the truth comes out: the person they're afraid of is a young man they've already nailed to the wall."},
+    {t:"Garlic", g:"Supernatural comedy / Body horror", s:"dev",
+     l:"A middle-aged man blames his insomnia, digestive trouble, strange cravings, and growing sensitivity to sunlight on the indignities of aging, until a surprise DNA match in Transylvania reveals that he isn't facing his mortality. He's waking up to his family's vampiric immortality."},
+    {t:"Keto Pancakes", g:"Satirical body horror / Dark comedy", s:"dev",
+     l:"When a miraculous pancake mix promises effortless weight loss, America becomes obsessed with its secret recipe, until customers discover that every box demands a different, deeply personal ingredient, and the pursuit of the perfect body drives ordinary people to increasingly grotesque acts."},
+    {t:"Vivid Dream", g:"Speculative sci-fi / Social horror", s:"concept",
+     l:"When a revolutionary device lets people experience dreams more vivid and fulfilling than waking life, society begins abandoning reality, and the dwindling population of non-users must face a disturbing question: what happens to the real world when nobody wants to live in it anymore?"},
+    {t:"The Last Confession", g:"Psychological sci-fi", s:"concept",
+     l:"Two elderly men trade increasingly disturbing stories about the sins and regrets of their lives, uncovering connections between their memories, until they suspect their conversations are part of an experimental treatment designed to force them to face their guilt before they die."},
+    {t:"The Thing in the Woods", g:"Daylight folk horror / Surreal horror", s:"concept",
+     l:"On a walk through a peaceful forest, a lone visitor notices a distant figure moving with impossible, almost graceful motions. As it draws nearer, the ordinary sounds of nature give way to the jangle of children's toys, and the visitor realizes that whatever is approaching doesn't belong in this world."},
+    {t:"Purple Lights", g:"Surreal sci-fi / Mystery", s:"concept",
+     l:"When the streetlights in a quiet town begin turning purple, one resident becomes obsessed with finding out why, and starts to suspect the lights are changing something far more disturbing than the look of the streets."}
+  ];
+
+  // seeded RNG so each episode always gets the same little song
+  function rng(seed){let h=2166136261;for(const c of seed){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return function(){h+=0x6D2B79F5;let t=h;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+
+  const css = getComputedStyle(document.documentElement);
+  const MOON = css.getPropertyValue('--moon').trim() || '#e9e3d2';
+  const RUF  = css.getPropertyValue('--rufous').trim() || '#d08a5c';
+
+  // one phrase of nightingale-like song: repeated notes, a rising whistle, a trill
+  function phrase(r){
+    const kind = r();
+    if(kind<.35) return {k:"rep", n:3+Math.floor(r()*5), f:2+r()*3.5, w:.03+r()*.02, gap:.07+r()*.05};
+    if(kind<.7)  return {k:"whistle", f:1.6+r()*1.6, rise:.4+r()*1.2, w:.35+r()*.5};
+    return {k:"trill", n:6+Math.floor(r()*10), lo:2.5+r()*1.5, hi:5+r()*2.5, gap:.035+r()*.02};
+  }
+  function drawPhrase(ctx,p,x0,pxPerSec,yOf,color,alpha,lw){
+    ctx.strokeStyle=color;ctx.globalAlpha=alpha;ctx.lineWidth=lw;ctx.lineCap="round";
+    let x=x0;
+    if(p.k==="rep"){
+      for(let i=0;i<p.n;i++){
+        ctx.beginPath();ctx.moveTo(x,yOf(p.f+1.4));ctx.lineTo(x+p.w*pxPerSec,yOf(p.f-.6));ctx.stroke();
+        x+= (p.w+p.gap)*pxPerSec;
+      }
+    }else if(p.k==="whistle"){
+      ctx.beginPath();
+      const steps=20;
+      for(let i=0;i<=steps;i++){
+        const tt=i/steps, f=p.f+p.rise*tt*tt;
+        const xx=x+tt*p.w*pxPerSec;
+        i?ctx.lineTo(xx,yOf(f)):ctx.moveTo(xx,yOf(f));
+      }
+      ctx.stroke();
+      x+=p.w*pxPerSec;
+    }else{
+      for(let i=0;i<p.n;i++){
+        ctx.beginPath();ctx.moveTo(x,yOf(p.hi));ctx.lineTo(x+p.gap*.6*pxPerSec,yOf(p.lo));ctx.stroke();
+        x+=p.gap*pxPerSec;
+      }
+    }
+    ctx.globalAlpha=1;
+    return x;
+  }
+
+  // ---- episode list ----
+  function epGlyph(title){
+    const c=document.createElement('canvas');c.setAttribute('aria-hidden','true');
+    const dpr=Math.min(window.devicePixelRatio||1,2);c.width=132*dpr;c.height=30*dpr;
+    const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+    const r=rng(title);const yOf=f=>28-(f/8)*26;
+    ctx.strokeStyle=MOON;ctx.globalAlpha=.18;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,29.5);ctx.lineTo(132,29.5);ctx.stroke();ctx.globalAlpha=1;
+    let x=2;
+    while(x<124){
+      const p=phrase(r);
+      x=drawPhrase(ctx,p,x,90,yOf,r()<.25?RUF:MOON,.9,1.3)+8+r()*10;
+    }
+    return c;
+  }
+  function render(listId,status){
+    const ol=document.getElementById(listId);
+    EPISODES.filter(e=>e.s===status).forEach(e=>{
+      const li=document.createElement('li');li.className='ep'+(status==='concept'?' concept':'');
+      const left=document.createElement('div');left.className='ep-title';
+      const h=document.createElement('h3');h.textContent=e.t;
+      const g=document.createElement('span');g.className='genre';g.textContent=e.g;
+      left.append(h,g,epGlyph(e.t));
+      const p=document.createElement('p');p.textContent=e.l;
+      li.append(left,p);ol.append(li);
+    });
+  }
+  render('devList','dev');render('conceptList','concept');
+
+  // ---- hero sonogram ----
+  const cv=document.getElementById('sono');
+  const ctx=cv.getContext('2d');
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W=0,H=0,dpr=1;
+  const PXS=140; // pixels per second of song
+  let tape=[]; // phrases laid out along time
+  const r=rng("the nightingale sings at night");
+  function extend(untilX){
+    let x = tape.length? tape[tape.length-1].end : 0;
+    while(x<untilX){
+      const p=phrase(r);
+      const dur = p.k==="rep" ? p.n*(p.w+p.gap) : p.k==="whistle" ? p.w : p.n*p.gap;
+      const accent=r()<.18;
+      tape.push({p,start:x,end:x+dur*PXS+30+r()*70,accent});
+      x=tape[tape.length-1].end;
+    }
+  }
+  function size(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=cv.clientWidth;H=cv.clientHeight;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function frame(offset){
+    ctx.clearRect(0,0,W,H);
+    const top=H*.12,bottom=H*.9;
+    const yOf=f=>bottom-(f/8)*(bottom-top);
+    // kHz gridlines, labelled at the right edge
+    ctx.font='10px "IBM Plex Mono", ui-monospace, monospace';
+    ctx.textAlign='right';
+    for(let k=0;k<=8;k+=2){
+      const y=yOf(k);
+      ctx.strokeStyle=MOON;ctx.globalAlpha=k===0?.22:.08;ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,Math.round(y)+.5);ctx.lineTo(W,Math.round(y)+.5);ctx.stroke();
+      ctx.globalAlpha=.4;ctx.fillStyle=MOON;
+      if(k>0) ctx.fillText(k+' kHz',W-12,y-4);
+    }
+    ctx.globalAlpha=1;
+    extend(offset+W+200);
+    for(const ph of tape){
+      if(ph.end<offset-50) continue;
+      if(ph.start>offset+W) break;
+      drawPhrase(ctx,ph.p,ph.start-offset,PXS,yOf,ph.accent?RUF:MOON,ph.accent?.95:.55,1.6);
+    }
+    // trim old phrases
+    while(tape.length && tape[0].end<offset-200) tape.shift();
+  }
+  let off=0,last=null;
+  function loop(ts){
+    if(last!==null) off+= (ts-last)/1000*38;
+    last=ts;frame(off);requestAnimationFrame(loop);
+  }
+  size();frame(0);
+  window.addEventListener('resize',()=>{size();frame(off)});
+  if(!reduce) requestAnimationFrame(loop);
+})();
+</script>
+
+</body>
+</html>
