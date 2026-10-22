@@ -117,6 +117,11 @@ h2{
 footer .wrap{padding-block:48px 64px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 32px;align-items:baseline}
 footer .mark{font-family:var(--f-display);font-size:1.6rem}
 footer p{margin:0}
+.listen{justify-self:start;display:inline-flex;align-items:center;gap:12px;background:transparent;color:var(--moon);border:1px solid var(--rufous);border-radius:999px;padding:10px 18px 10px 14px;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.listen:hover{background:var(--rufous-soft)}
+.listen[aria-pressed="true"]{background:var(--rufous);color:var(--night)}
+.listen svg{width:14px;height:14px;flex:none}
+.credit{font-family:var(--f-mono);font-size:.68rem;color:var(--haze);letter-spacing:.04em;flex-basis:100%}
 
 @media (max-width:760px){
   .premise{grid-template-columns:minmax(0,1fr)}
@@ -136,6 +141,11 @@ footer p{margin:0}
     <h1>The <em>Night</em>ingale</h1>
     <p class="tagline">Strange and wonderful stories about the light that survives in darkness.</p>
     <p class="label creator">Created by Scott Downes</p>
+    <button class="listen" id="listen" type="button" aria-pressed="false">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><path id="listenIcon" d="M3 1.5v11l9-5.5z" fill="currentColor"/></svg>
+      <span id="listenLabel">Hear the nightingale</span>
+    </button>
+    <audio id="song" src="nightingale.mp3" preload="none" loop></audio>
     <p class="axis-note" id="axisNote">Behind the title: a sonogram of birdsong, 0–8 kHz</p>
   </div>
 </header>
@@ -212,6 +222,7 @@ footer p{margin:0}
   <div class="wrap">
     <span class="mark">The Nightingale</span>
     <p class="label">An anthology by Scott Downes · 2026</p>
+    <p class="credit">Nightingale song: recording by Digweed1, via Wikimedia Commons, dedicated to the public domain (CC0).</p>
   </div>
 </footer>
 
@@ -326,11 +337,34 @@ footer p{margin:0}
       x=tape[tape.length-1].end;
     }
   }
+  // live spectrogram of the real recording, drawn into an offscreen strip
+  let spec=document.createElement('canvas'), back=document.createElement('canvas');
+  let sctx=spec.getContext('2d'), bctx=back.getContext('2d');
+  let live=false, analyser=null, bins=null, actx=null;
   function size(){
     dpr=Math.min(window.devicePixelRatio||1,2);
     W=cv.clientWidth;H=cv.clientHeight;
     cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
+    spec.width=back.width=Math.max(1,Math.round(W));spec.height=back.height=Math.max(1,Math.round(H));
+  }
+  function pushColumn(top,bottom){
+    const step=2;
+    bctx.clearRect(0,0,back.width,back.height);
+    bctx.drawImage(spec,-step,0);
+    [spec,back]=[back,spec];[sctx,bctx]=[bctx,sctx];
+    analyser.getByteFrequencyData(bins);
+    const nyq=actx.sampleRate/2;
+    for(let y=Math.floor(top);y<bottom;y+=2){
+      const f=(bottom-y)/(bottom-top)*8000;
+      const v=bins[Math.min(bins.length-1,Math.round(f/nyq*bins.length))]/255;
+      if(v<.5) continue;
+      const a=Math.pow((v-.5)/.5,1.4);
+      sctx.globalAlpha=Math.min(1,a*1.1);
+      sctx.fillStyle=v>.86?RUF:MOON;
+      sctx.fillRect(spec.width-step,y,step,2);
+    }
+    sctx.globalAlpha=1;
   }
   function frame(offset){
     ctx.clearRect(0,0,W,H);
@@ -347,6 +381,11 @@ footer p{margin:0}
       if(k>0) ctx.fillText(k+' kHz',W-12,y-4);
     }
     ctx.globalAlpha=1;
+    if(live){
+      pushColumn(top,bottom);
+      ctx.drawImage(spec,0,0,W,H);
+      return;
+    }
     extend(offset+W+200);
     for(const ph of tape){
       if(ph.end<offset-50) continue;
@@ -359,11 +398,50 @@ footer p{margin:0}
   let off=0,last=null;
   function loop(ts){
     if(last!==null) off+= (ts-last)/1000*38;
-    last=ts;frame(off);requestAnimationFrame(loop);
+    last=ts;frame(off);
+    if(!reduce||live) requestAnimationFrame(loop); else running=false;
   }
   size();frame(0);
   window.addEventListener('resize',()=>{size();frame(off)});
-  if(!reduce) requestAnimationFrame(loop);
+  let running=false;
+  function start(){ if(!running){running=true;last=null;requestAnimationFrame(loop);} }
+  if(!reduce) start();
+
+  const song=document.getElementById('song');
+  const btn=document.getElementById('listen');
+  const label=document.getElementById('listenLabel');
+  const icon=document.getElementById('listenIcon');
+  const note=document.getElementById('axisNote');
+  function setUI(on){
+    btn.setAttribute('aria-pressed',on?'true':'false');
+    label.textContent=on?'Pause':'Hear the nightingale';
+    icon.setAttribute('d',on?'M3 1.5h3v11H3zM8 1.5h3v11H8z':'M3 1.5v11l9-5.5z');
+    note.textContent=on?'Behind the title: the nightingale, live, 0–8 kHz':'Behind the title: a sonogram of birdsong, 0–8 kHz';
+  }
+  btn.addEventListener('click',async()=>{
+    try{
+      if(!actx){
+        actx=new (window.AudioContext||window.webkitAudioContext)();
+        const src=actx.createMediaElementSource(song);
+        analyser=actx.createAnalyser();
+        analyser.fftSize=2048;analyser.smoothingTimeConstant=.25;
+        bins=new Uint8Array(analyser.frequencyBinCount);
+        src.connect(analyser);analyser.connect(actx.destination);
+      }
+      if(song.paused){
+        await actx.resume();
+        await song.play();
+        sctx.clearRect(0,0,spec.width,spec.height);
+        live=true;setUI(true);start();
+      }else{
+        song.pause();live=false;setUI(false);
+        if(reduce) frame(off);
+      }
+    }catch(e){
+      live=false;setUI(false);
+      label.textContent='Audio unavailable';
+    }
+  });
 })();
 </script>
 
