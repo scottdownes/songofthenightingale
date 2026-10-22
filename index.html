@@ -196,7 +196,10 @@ footer p{margin:0}
         <p>Nine stories so far. Each one has its own song.</p>
       </div>
 
-      <div class="group-label"><span class="label">In development</span><span class="label">5 episodes</span></div>
+      <div class="group-label"><span class="label">Written</span><span class="label">1 episode</span></div>
+      <ol class="episodes" id="writtenList"></ol>
+
+      <div class="group-label"><span class="label">In development</span><span class="label">4 episodes</span></div>
       <ol class="episodes" id="devList"></ol>
 
       <div class="group-label"><span class="label">From the notebooks</span><span class="label">4 concepts</span></div>
@@ -215,14 +218,14 @@ footer p{margin:0}
 <script>
 (function(){
   const EPISODES = [
-    {t:"First Session", g:"Psychological horror / Supernatural thriller", s:"dev",
-     l:"A seemingly compassionate online therapist helps patients confront recurring nightmares. When one woman begins remembering the horrifying truth behind her dreams, she discovers that her therapist is a serial killer who has imprisoned his victims' souls, and that he may be trapped in an eternal nightmare of his own making."},
+    {t:"First Session", g:"Psychological horror", s:"written",
+     l:"Every one of Dr. Gregory Braid's online patients has the same recurring nightmare: a purple-lit motel off I-75, a long hallway, footsteps behind them. Tonight, Josie is checking in."},
     {t:"Honey Boy", g:"Supernatural slasher / Folk horror", s:"dev",
      l:"A grotesque, sweet-toothed killer who lures children with candy discovers that his murderous compulsions are a terrible family inheritance, forcing him to confront the kindly grandfather whose darkest secrets may explain the monster he's become."},
     {t:"County Downs", g:"Horror / Dark comedy", s:"dev",
      l:"After walking out of a rowdy teenage house party, two young women become convinced they're being followed through a quiet suburban neighborhood. When they take refuge in an unfinished house, the truth comes out: the person they're afraid of is a young man they've already nailed to the wall."},
-    {t:"Garlic", g:"Supernatural comedy / Body horror", s:"dev",
-     l:"A middle-aged man blames his insomnia, digestive trouble, strange cravings, and growing sensitivity to sunlight on the indignities of aging, until a surprise DNA match in Transylvania reveals that he isn't facing his mortality. He's waking up to his family's vampiric immortality."},
+    {t:"Garlic", g:"Comedy", s:"dev",
+     l:"Gary Oldman (not the actor) is fifty-two, anemic, suddenly sensitive to garlic and sunlight, and wide awake every night at 3 a.m. His doctors have an explanation for every symptom. His mother has a different one."},
     {t:"Keto Pancakes", g:"Satirical body horror / Dark comedy", s:"dev",
      l:"When a miraculous pancake mix promises effortless weight loss, America becomes obsessed with its secret recipe, until customers discover that every box demands a different, deeply personal ingredient, and the pursuit of the perfect body drives ordinary people to increasingly grotesque acts."},
     {t:"Vivid Dream", g:"Speculative sci-fi / Social horror", s:"concept",
@@ -303,7 +306,7 @@ footer p{margin:0}
       li.append(left,p);ol.append(li);
     });
   }
-  render('devList','dev');render('conceptList','concept');
+  render('writtenList','written');render('devList','dev');render('conceptList','concept');
 
   // ---- hero sonogram ----
   const cv=document.getElementById('sono');
