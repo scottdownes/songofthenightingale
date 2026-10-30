@@ -112,6 +112,11 @@ h2{
 .ep p{margin:0;max-width:62ch}
 .ep:hover h3{color:var(--rufous)}
 .ep.concept p{color:var(--haze)}
+.ep-link{color:inherit;text-decoration:none}
+.ep-link:hover{color:var(--rufous)}
+.ep-body{display:grid;gap:14px;align-content:start;min-width:0}
+.ep-more{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--rufous);text-decoration:none;justify-self:start;border-bottom:1px solid var(--rufous);padding-bottom:2px}
+.ep-more:hover{color:var(--moon);border-color:var(--moon)}
 
 /* ---------- colophon ---------- */
 footer .wrap{padding-block:48px 64px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 32px;align-items:baseline}
@@ -206,10 +211,10 @@ footer p{margin:0}
         <p>Nine stories so far. Each one has its own song.</p>
       </div>
 
-      <div class="group-label"><span class="label">Written</span><span class="label">1 episode</span></div>
+      <div class="group-label"><span class="label">Written</span><span class="label">2 episodes</span></div>
       <ol class="episodes" id="writtenList"></ol>
 
-      <div class="group-label"><span class="label">In development</span><span class="label">4 episodes</span></div>
+      <div class="group-label"><span class="label">In development</span><span class="label">3 episodes</span></div>
       <ol class="episodes" id="devList"></ol>
 
       <div class="group-label"><span class="label">From the notebooks</span><span class="label">4 concepts</span></div>
@@ -229,13 +234,13 @@ footer p{margin:0}
 <script>
 (function(){
   const EPISODES = [
-    {t:"First Session", g:"Psychological horror", s:"written",
+    {t:"First Session", g:"Psychological horror", s:"written", href:"/first-session/",
      l:"Every one of Dr. Gregory Braid's online patients has the same recurring nightmare: a purple-lit motel off I-75, a long hallway, footsteps behind them. Tonight, Josie is checking in."},
     {t:"Honey Boy", g:"Supernatural slasher / Folk horror", s:"dev",
      l:"A grotesque, sweet-toothed killer who lures children with candy discovers that his murderous compulsions are a terrible family inheritance, forcing him to confront the kindly grandfather whose darkest secrets may explain the monster he's become."},
     {t:"County Downs", g:"Horror / Dark comedy", s:"dev",
      l:"After walking out of a rowdy teenage house party, two young women become convinced they're being followed through a quiet suburban neighborhood. When they take refuge in an unfinished house, the truth comes out: the person they're afraid of is a young man they've already nailed to the wall."},
-    {t:"Garlic", g:"Comedy", s:"dev",
+    {t:"Garlic", g:"Comedy", s:"written",
      l:"Gary Oldman (not the actor) is fifty-two, anemic, suddenly sensitive to garlic and sunlight, and wide awake every night at 3 a.m. His doctors have an explanation for every symptom. His mother has a different one."},
     {t:"Keto Pancakes", g:"Satirical body horror / Dark comedy", s:"dev",
      l:"When a miraculous pancake mix promises effortless weight loss, America becomes obsessed with its secret recipe, until customers discover that every box demands a different, deeply personal ingredient, and the pursuit of the perfect body drives ordinary people to increasingly grotesque acts."},
@@ -310,11 +315,15 @@ footer p{margin:0}
     EPISODES.filter(e=>e.s===status).forEach(e=>{
       const li=document.createElement('li');li.className='ep'+(status==='concept'?' concept':'');
       const left=document.createElement('div');left.className='ep-title';
-      const h=document.createElement('h3');h.textContent=e.t;
+      const h=document.createElement('h3');
+      if(e.href){const a=document.createElement('a');a.href=e.href;a.textContent=e.t;a.className='ep-link';h.append(a);}
+      else h.textContent=e.t;
       const g=document.createElement('span');g.className='genre';g.textContent=e.g;
       left.append(h,g,epGlyph(e.t));
       const p=document.createElement('p');p.textContent=e.l;
-      li.append(left,p);ol.append(li);
+      const right=document.createElement('div');right.className='ep-body';right.append(p);
+      if(e.href){const more=document.createElement('a');more.href=e.href;more.className='ep-more';more.textContent='Read the spotlight';right.append(more);}
+      li.append(left,right);ol.append(li);
     });
   }
   render('writtenList','written');render('devList','dev');render('conceptList','concept');
